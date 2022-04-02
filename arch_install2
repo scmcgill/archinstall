@@ -94,5 +94,4 @@ wait
 echo "DONE"
 }
 
-arch-chroot /mnt chroot_commands
 ./arch_install3
