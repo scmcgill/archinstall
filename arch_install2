@@ -94,4 +94,5 @@ wait
 echo "DONE"
 }
 
+chroot_commands
 ./arch_install3

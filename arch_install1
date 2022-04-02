@@ -70,7 +70,6 @@ wait
 lsblk
 read -p "Do these partitions and devices look right?"
 echo "END SCRIPT 1"
-mount /mnt
 wait
-arch-chroot ./arch_install2 2>&1 | tee  ./log.txt
+arch-chroot /mnt ./arch_install2 2>&1 | tee  ./log.txt
 wait 
