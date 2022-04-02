@@ -54,6 +54,8 @@ read -p "Do these mounts look right? press any key"
 pacstrap /mnt base base-devel linux linux-firmware efibootmgr grub os-prober sudo nano vim
 wait
 chmod +x ./arch_install2
+chmod +x ./arch_install3
+chmod +x ./arch_install4
 wait
 cp ./arch_install2 /mnt
 cp ./arch_install3 /mnt
@@ -70,5 +72,5 @@ read -p "Do these partitions and devices look right?"
 echo "END SCRIPT 1"
 # mount /mnt
 wait
-/arch_install2 2>&1 | tee  ./log.txt
+./arch_install2 2>&1 | tee  ./log.txt
 wait 
