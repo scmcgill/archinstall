@@ -12,7 +12,7 @@ wait
 timedatectl set-ntp true  
 wait
 
-pacman -Syyu 
+pacman -Sy 
 wait
 
 
@@ -77,7 +77,7 @@ mkdir /home/sm/Documents
 mkdir /home/sm/bin
 chown -R sm /home/sm
 echo "INSTALLING PACKAGES AS SM"
-sudo -H -u sm bash -c 'sudo pacman -Syyu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager ufw man-pages tldr && sudo systemctl enable NetworkManager && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw'
+sudo -H -u sm bash -c 'sudo pacman -Syu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager dhcp ufw man-pages tldr && sudo systemctl enable NetworkManager && systemctl enable dhcpd && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw && sudo systemctl status dhcpd'
  
 wait
 
@@ -86,3 +86,4 @@ exit
 }
 
 chroot_commands
+exit
