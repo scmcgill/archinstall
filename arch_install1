@@ -33,7 +33,6 @@ mkdir /mnt/home/sm
 echo "MOUNTING HOME"
 mount $home_partition /mnt/home
 echo "MAKING SWAP"
-mkdir /swapfile
 fallocate -l 6000M /swapfile
 wait
 ls -lh /swapfile
