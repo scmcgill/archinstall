@@ -77,8 +77,7 @@ mkdir /home/sm/Documents
 mkdir /home/sm/bin
 chown -R sm /home/sm
 echo "INSTALLING PACKAGES AS SM"
-sudo -H -u sm bash -c 'sudo pacman -Syyu && sudo pacman -Sy --noconfirm  networkmanager ufw gufw wget curl amd-ucode xorg xorg-xinit xorg-server i3-gaps i3-status dmenu zip unzip xclip man-pages networkmanager vlc alsa-utils  xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen   neofetch terminator w3m'  
-# , office software, java, ide, id3, cron, 
+sudo -H -u sm bash -c 'sudo pacman -Syyu && sudo pacman -Sy --noconfirm  networkmanager ufw man-pages tldr'
 wait
 echo "ENABLING NETWORK AND FIREWALL"
 # enable services
@@ -87,10 +86,6 @@ systemctl enable NetworkManager
 wait
 systemctl enable ufw  
 wait
-systemctl enable lightdm  
-wait
-# i3 config to home
-#cp /etc/i3status.conf ~/.config/i3status/config
 echo "DONE"
 }
 

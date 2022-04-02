@@ -20,13 +20,6 @@ sudo pacman -Sy --noconfirm git  networkmanager ufw xorg xorg-xinit xorg-server 
 
 wait
 
-# enable services
-sudo systemctl enable NetworkManager 2>/errors.txt
-wait
-sudo systemctl enable ufw 2>/errors.txt
-wait
-
-
 # exit chroot
 exit
 # unmount device
