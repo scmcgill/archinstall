@@ -16,7 +16,7 @@ useradd sm 2>/errors.txt
 wait
 
 su sm 
-sudo pacman -Sy --noconfirm git  networkmanager ufw xorg xorg-xinit xorg-server i3-gaps xclip man-pages networkmanager pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen gimp imagemagick terminator firefox openconnect-openconnect w3m clamav clamtk conky
+sudo pacman -Sy --noconfirm git networkmanager ufw xorg xorg-xinit xorg-server i3-gaps xclip man-pages networkmanager pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen vlc terminator firefox w3m clamav clamtk conky
 
 wait
 

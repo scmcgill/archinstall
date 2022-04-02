@@ -77,17 +77,15 @@ mkdir /home/sm/Documents
 mkdir /home/sm/bin
 chown -R sm /home/sm
 echo "INSTALLING PACKAGES AS SM"
-sudo -H -u sm bash -c 'sudo pacman -Syyu && sudo pacman -Sy --noconfirm  networkmanager ufw man-pages tldr'
+sudo -H -u sm bash -c 'sudo pacman -Syyu --noconfirm && sudo pacman -Sy --noconfirm  networkmanager ufw man-pages tldr'
 wait
 echo "ENABLING NETWORK AND FIREWALL"
 # enable services
-wait
 systemctl enable NetworkManager   
-wait
 systemctl enable ufw  
-wait
 echo "DONE"
+./arch_install3
+exit
 }
 
 chroot_commands
-./arch_install3
