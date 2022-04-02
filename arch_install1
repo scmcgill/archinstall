@@ -11,6 +11,10 @@ mkpart ArchBoot fat32 0% 800Mib \
 mkpart ArchRoot ext4 1000Mib 6000Mib \
 mkpart ArchHome ext4 6000Mib 100%
 
+boot_partition="$device"1
+root_partition="$device"2
+home_partition="$device"3
+
 mkfs.fat -F32 $boot_partition  
 wait
 mkfs.ext4 $root_partition  
@@ -57,11 +61,11 @@ read -p "Do these partitions and devices look right?"
 # install packages
 pacstrap /mnt base base-devel linux linux-firmware efibootmgr grub os-prober sudo nano vim
 wait
-chmod +x /root/arch_install2
+chmod +x ./arch_install2
 wait
-cp /root/arch_install2 /mnt
-cp /root/arch_install3 /mnt
-cp /root/arch_install4 /mnt
+cp ./arch_install2 /mnt
+cp ./arch_install3 /mnt
+cp ./arch_install4 /mnt
 wait
 
 echo "END SCRIPT 1"
