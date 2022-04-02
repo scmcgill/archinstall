@@ -90,18 +90,4 @@ wait
 # i3 config to home
 #cp /etc/i3status.conf ~/.config/i3status/config
 echo "DONE"
-
-
-
-
-
-
-
-
-
-
-# exit chroot
-#exit
-# unmount device
-#umount -R /mnt 
-#wait
+./arch_install3
