@@ -1,4 +1,6 @@
 #!/bin/bash
+
+function chroot_commands() {
 # set time and date
 device="/dev/sda"
 boot_partition=$device"1"
@@ -90,4 +92,7 @@ wait
 # i3 config to home
 #cp /etc/i3status.conf ~/.config/i3status/config
 echo "DONE"
+}
+
+arch-chroot /mnt chroot_commands
 ./arch_install3

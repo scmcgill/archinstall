@@ -49,14 +49,6 @@ wait
 lsblk
 read -p "Do these mounts look right? press any key"
 
-# generate fstab
-echo "GENERATING /etc/fstab"
-genfstab -U /mnt >> /mnt/etc/fstab 
-wait
-
-lsblk
-cat /mnt/etc/fstab
-read -p "Do these partitions and devices look right?"
 
 # install packages
 pacstrap /mnt base base-devel linux linux-firmware efibootmgr grub os-prober sudo nano vim
@@ -68,8 +60,15 @@ cp ./arch_install3 /mnt
 cp ./arch_install4 /mnt
 wait
 
+# generate fstab
+echo "GENERATING /etc/fstab"
+genfstab -U /mnt >> /mnt/etc/fstab 
+wait
+
+lsblk
+read -p "Do these partitions and devices look right?"
 echo "END SCRIPT 1"
 # mount /mnt
 wait
-arch-chroot /mnt ./arch_install2 2>&1 | tee  ./log.txt
+/arch_install2 2>&1 | tee  ./log.txt
 wait 
