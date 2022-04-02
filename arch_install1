@@ -5,9 +5,9 @@ read device
 echo $device" will be formatted"
 
 # create partitions
-parted --script $device --\
+parted --script $device -- \
 mklabel gpt \
-mkpart ArchBoot fat32 64s 800Mib \
+mkpart ArchBoot fat32 1Mib 800Mib \
 mkpart ArchRoot ext4 1000Mib 16000Mib \
 mkpart ArchHome ext4 30000Mib -ls
 
