@@ -1,0 +1,15 @@
+#!/bin/bash
+boot_partition=$device"1"
+root_partition=$device"2"
+home_partition=$device"3"
+
+# download and install AUR
+git clone https://aur.archlinux.org/yay.git
+
+
+
+cd /yay
+makepkg -si
+cd /
+
+./addmybintopath

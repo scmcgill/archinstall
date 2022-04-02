@@ -1,0 +1,107 @@
+#!/bin/bash
+# set time and date
+device="/dev/sda"
+boot_partition=$device"1"
+root_partition=$device"2"
+home_partition=$device"3"
+passwd  
+wait 
+
+timedatectl set-ntp true  
+wait
+
+pacman -Syyu 
+wait
+
+
+# set time zone
+ln -sf /usr/share/zoneinfo/America/Indianapolis /etc/localtime  
+wait
+# enable hardware clock
+hwclock --systohc  
+wait
+# generate locale 
+english_locale_line=`grep -n "en_US.UTF-8 UTF-8" /etc/locale.gen | cut -d ":" -f 1 | tail -1`  
+wait
+sed -i '/$english_locale_line/s/^#//' /etc/locale.gen  
+wait
+locale-gen  
+wait
+#add hostname
+echo sm > /etc/host  
+wait
+# add hosts
+echo '127.0.0.1	localhost' > /etc/hosts  
+wait
+echo '::1	localhost' >> /etc/hosts  
+wait
+echo '127.0.1.1 sm@archVM' >>  /etc/hosts  
+wait
+
+# grub installation 
+echo "GRUB INSTALLATION"
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB  
+wait
+grub-mkconfig -o /boot/grub/grub.cfg  
+lsblk
+read -p "press any key"
+echo "GENERATING INITRAMFS"
+# generate initramfs
+mkinitcpio -P  
+wait
+wait
+# add user and set password after installation
+echo "ADDING USER"
+useradd sm  
+
+wait
+usermod -aG wheel sm  
+wait
+passwd sm
+wait
+echo "EDITING SUDOERS FILE"
+wait
+# edit sudoers file to allow wheel to do anything
+wheel_line=`grep -n "# %wheel ALL=(ALL) ALL" /etc/sudoers | cut -d ":" -f 1`
+wait
+sed -i "$wheel_line s/^#//" /etc/sudoers  
+# create user and set password
+wait
+mkdir /home
+mkdir /home/sm
+mkdir /home/sm/Audio
+mkdir /home/sm/Pictures
+mkdir /home/sm/Documents
+mkdir /home/sm/bin
+chown -R sm /home/sm
+echo "INSTALLING PACKAGES AS SM"
+sudo -H -u sm bash -c 'sudo pacman -Sy --noconfirm  networkmanager ufw gufw wget curl amd-ucode xorg xorg-xinit xorg-server i3-gaps i3-status dmenu zip unzip xclip man-pages networkmanager vlc alsa-utils  xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen   neofetch terminator w3m markdown git'  
+# , office software, java, ide, id3, cron, 
+wait
+echo "ENABLING NETWORK AND FIREWALL"
+# enable services
+wait
+systemctl enable NetworkManager   
+wait
+systemctl enable ufw  
+wait
+systemctl enable lightdm  
+wait
+# i3 config to home
+#cp /etc/i3status.conf ~/.config/i3status/config
+echo "DONE"
+
+
+
+
+
+
+
+
+
+
+# exit chroot
+#exit
+# unmount device
+#umount -R /mnt 
+#wait

@@ -1,0 +1,9 @@
+#!/bin/bash
+user=$( whoami )
+echo -e  'for d in $( find ~/bin/ -type d | egrep -v "^.*\..*$" ); do export PATH=$PATH:"$d"; done
+# source user aliases
+source /home/$user/bin/aliases/aliases.txt
+set -o vi
+setxkbmap -option caps:swapescape' >> /home/$user/.bashrc
+
+unset user

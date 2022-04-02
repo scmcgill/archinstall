@@ -1,0 +1,78 @@
+#!/bin/bash
+lsblk
+echo "Which device will be formatted?"
+read device
+echo $device" will be formatted"
+
+# create partitions
+parted --script $device --\
+mklabel gpt \
+mkpart ArchBoot fat32 64s 800Mib \
+mkpart ArchRoot ext4 1000Mib 16000Mib \
+mkpart ArchHome ext4 30000Mib -ls
+
+#mkpart ArchRoot ext4 1000Mib 30000Mib \
+#mkpart ArchHome ext4 30000Mib 50000Mib 
+# format partitions
+#boot_partition=$device"1"
+#root_partition=$device"3"
+#home_partition=$device"4"
+
+mkfs.fat -F32 $boot_partition  
+wait
+mkfs.ext4 $root_partition  
+wait
+mkfs.ext4 $home_partition  
+wait
+lsblk
+read -p "press any key"
+# mount root partition
+echo "MOUNTING ROOT"
+mount $root_partition /mnt 
+wait
+# mount home partition 
+mkdir /mnt/home
+mkdir /mnt/home/sm
+echo "MOUNTING HOME"
+mount $home_partition /mnt/home
+echo "MAKING SWAP"
+mkdir /swapfile
+fallocate -l 6000M /swapfile
+wait
+ls -lh /swapfile
+
+echo "MAKING BOOT DIRECTORY"
+mkdir /mnt/boot
+mkdir /mnt/boot/efi  
+wait
+
+echo "MOUNTING BOOT DIRECTORY"
+mount $boot_partition /mnt/boot/efi  
+wait
+lsblk
+read -p "Do these mounts look right? press any key"
+
+# generate fstab
+mkdir /mnt/etc/fstab
+echo "GENERATING /etc/fstab"
+genfstab -U /mnt >> /mnt/etc/fstab 
+wait
+
+lsblk
+cat /mnt/etc/fstab
+read -p "Do these partitions and devices look right?"
+
+# install packages
+pacstrap /mnt base base-devel linux linux-firmware efibootmgr grub os-prober sudo nano vim
+wait
+chmod +x /root/arch_install2
+wait
+cp /root/arch_install2 /mnt
+wait
+
+echo "END SCRIPT 1"
+# mount /mnt
+wait
+arch-chroot /mnt ./arch_install2 2>&1 | tee  ./log.txt
+wait 
+./arch_install3

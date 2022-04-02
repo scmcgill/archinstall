@@ -1,0 +1,35 @@
+#!/bin/bash
+# install grub
+boot_partition=$device"1"
+root_partition=$device"2"
+home_partition=$device"3"
+
+echo 
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --recheck 2>/errors.txt
+wait
+grub-mkconfig -o /boot/grub/grub.cfg 2>/errors.txt
+# set root password
+
+wait
+# add user and set password after installation
+useradd sm 2>/errors.txt
+wait
+
+su sm 
+sudo pacman -Sy --noconfirm git  networkmanager ufw xorg xorg-xinit xorg-server i3-gaps xclip man-pages networkmanager pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen gimp imagemagick terminator firefox openconnect-openconnect w3m clamav clamtk conky
+
+wait
+
+# enable services
+sudo systemctl enable NetworkManager 2>/errors.txt
+wait
+sudo systemctl enable ufw 2>/errors.txt
+wait
+
+
+# exit chroot
+exit
+# unmount device
+umount -R /mnt 
+wait
+./arch_install4
