@@ -51,7 +51,7 @@ echo "EDITING SUDOERS FILE"
 wait
 # edit sudoers file to allow wheel to do anything
 wheel_line=`grep -nm1 "# %wheel ALL=(ALL) ALL" /etc/sudoers | cut -d ":" -f 1`
-sed -i '$wheel_line s/^#//' /etc/sudoers  
+sed -i "$wheel_line s/^#//" /etc/sudoers  
 # create user and set password
 mkdir /home
 mkdir /home/sm
