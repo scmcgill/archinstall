@@ -6,6 +6,8 @@ device="/dev/sda"
 boot_partition=$device"1"
 root_partition=$device"2"
 home_partition=$device"3"
+
+# set root password
 passwd  
 wait 
 
@@ -30,14 +32,14 @@ wait
 locale-gen  
 wait
 #add hostname
-echo sm > /etc/host  
+echo ArchVM > /etc/hostname
 wait
 # add hosts
 echo '127.0.0.1	localhost' > /etc/hosts  
 wait
 echo '::1	localhost' >> /etc/hosts  
 wait
-echo '127.0.1.1 sm@archVM' >>  /etc/hosts  
+echo '127.0.1.1 sm@ArchVM' >>  /etc/hosts  
 wait
 
 # grub installation 
@@ -77,9 +79,10 @@ mkdir /home/sm/Documents
 mkdir /home/sm/bin
 chown -R sm /home/sm
 echo "INSTALLING PACKAGES AS SM"
-sudo -H -u sm bash -c 'sudo pacman -Syu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager dhcp ufw man-pages tldr && sudo systemctl enable NetworkManager && systemctl enable dhcpd && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw && sudo systemctl status dhcpd'
- 
-wait
+sudo -H -u sm bash -c 'sudo pacman -Syu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager dhcpd ufw man-pages tldr && sudo systemctl enable NetworkManager && systemctl enable dhcpd && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw && sudo systemctl status dhcpd && \
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --recheck 2>/errors.txt && grub-mkconfig -o /boot/grub/grub.cfg 2>/errors.txt && \
+sudo pacman -Sy --noconfirm xorg-xinit xorg-server i3-gaps xclip man-pages pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen vlc terminator firefox w3m clamav clamtk conky
+wait'
 
 echo "DONE"
 exit

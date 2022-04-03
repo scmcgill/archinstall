@@ -9,10 +9,6 @@ grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi 
 wait
 grub-mkconfig -o /boot/grub/grub.cfg 2>/errors.txt
 # set root password
-
-wait
-# add user and set password after installation
-useradd sm 2>/errors.txt
 wait
 
 su sm 
@@ -21,7 +17,4 @@ sudo pacman -Sy --noconfirm xorg-xinit xorg-server i3-gaps xclip man-pages pulse
 wait
 
 # exit chroot
-exit
-# unmount device
-umount -R /mnt 
 exit

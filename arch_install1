@@ -72,10 +72,3 @@ echo "END SCRIPT 1"
 wait
 arch-chroot /mnt ./arch_install2 2>&1 | tee  ./log.txt
 echo "END SCRIPT 2"
-wait 
-arch-chroot /mnt ./arch_install3 2>&1 | tee  ./log.txt
-echo "END SCRIPT 3"
-wait
-arch-chroot /mnt ./arch_install3 2>&1 | tee  ./log.txt
-echo "END SCRIPT 4"
-
