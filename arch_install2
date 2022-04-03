@@ -2,22 +2,7 @@
 
 function chroot_commands() {
 # set time and date
-device="/dev/sda"
-boot_partition=$device"1"
-root_partition=$device"2"
-home_partition=$device"3"
-
-# set root password
-passwd  
-wait 
-
 timedatectl set-ntp true  
-wait
-
-pacman -Sy 
-wait
-
-
 # set time zone
 ln -sf /usr/share/zoneinfo/America/Indianapolis /etc/localtime  
 wait
@@ -26,20 +11,19 @@ hwclock --systohc
 wait
 # generate locale 
 english_locale_line=`grep -n "en_US.UTF-8 UTF-8" /etc/locale.gen | cut -d ":" -f 1 | tail -1`  
-wait
 sed -i '/$english_locale_line/s/^#//' /etc/locale.gen  
-wait
 locale-gen  
-wait
 #add hostname
 echo ArchVM > /etc/hostname
 wait
 # add hosts
 echo '127.0.0.1	localhost' > /etc/hosts  
-wait
 echo '::1	localhost' >> /etc/hosts  
-wait
 echo '127.0.1.1 sm@ArchVM' >>  /etc/hosts  
+# set root password
+passwd  
+wait 
+pacman -Sy 
 wait
 
 # grub installation 
@@ -64,19 +48,24 @@ wait
 passwd sm
 wait
 echo "EDITING SUDOERS FILE"
+wait
 # edit sudoers file to allow wheel to do anything
-wheel_line=`grep -n "# %wheel ALL=(ALL) ALL" /etc/sudoers | cut -d ":" -f 1`
-sed -i "$wheel_line s/^#//" /etc/sudoers  
-
+wheel_line=`grep -n "# %wheel ALL=(ALL) ALL$" /etc/sudoers | cut -d ":" -f 1`
+sed -i '$wheel_line s/^#//' /etc/sudoers  
+# create user and set password
+mkdir /home
+mkdir /home/sm
 mkdir /home/sm/Audio
 mkdir /home/sm/Pictures
 mkdir /home/sm/Documents
 mkdir /home/sm/bin
 chown -R sm /home/sm
-echo "INSTALLING PACKAGES AS sm"
-sudo -H -u sm bash -c 'sudo pacman -Syu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager dhcp ufw man-pages tldr xorg-xinit xorg-server i3-gaps xclip man-pages pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen vlc terminator firefox w3m clamav clamtk conky && sudo systemctl enable NetworkManager && systemctl enable dhcpd && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw && sudo systemctl status dhcpd && \
-sudo pacman -Syy --noconfirm && \
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --recheck 2>/errors.txt && grub-mkconfig -o /boot/grub/grub.cfg 2>/errors.txt'
+echo "INSTALLING PACKAGES AS SM"
+sudo -H -u sm bash -c 'sudo pacman -Syu --noconfirm && sudo pacman -Sy --noconfirm amd-ucode intel-ucode iproute2  git networkmanager dhcp ufw man-pages tldr && sudo systemctl enable NetworkManager && systemctl enable dhcpd && sudo systemctl enable ufw && sudo systemctl status NetworkManager && sudo systemctl status ufw && sudo systemctl status dhcpd && \
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --recheck 2>/errors.txt && grub-mkconfig -o /boot/grub/grub.cfg 2>/errors.txt && \
+sudo pacman -Sy --noconfirm xorg-xinit xorg-server i3-gaps xclip man-pages pulseeffects net-tools inetutils xclip man-pages tldr thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin nitrogen vlc terminator firefox w3m clamav clamtk conky
+wait'
+
 echo "DONE"
 exit
 }
