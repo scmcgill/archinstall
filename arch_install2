@@ -10,7 +10,7 @@ wait
 hwclock --systohc  
 wait
 # generate locale 
-english_locale_line=`grep -n "en_US.UTF-8 UTF-8" /etc/locale.gen | cut -d ":" -f 1 | tail -1`  
+english_locale_line=`grep -nm1 "en_US.UTF-8 UTF-8" /etc/locale.gen | cut -d ":" -f 1 | tail -1`  
 sed -i '/$english_locale_line/s/^#//' /etc/locale.gen  
 locale-gen  
 #add hostname
